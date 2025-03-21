@@ -1,30 +1,28 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import { generateResumePdf, generateResumeDocx } from '@/utils/downloadResume';
-import { useRouter, useSearchParams } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import DownloadOptions from "@/components/DownloadOptions"
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { ChevronLeft, ChevronRight, Plus, Trash2, Save, Eye } from "lucide-react";
-import { useResume, ResumeProvider } from "@/context/resume-context";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import DraggableSection from "@/components/DraggableSection";
-import ResumePreviewPane from "@/components/ResumePreviewPane";
-import StyleEditor, { type ResumeStyles } from "@/components/StyleEditor";
-import CustomSectionEditor from "@/components/CustomSectionEditor";
-import AISuggestions from "@/components/AISuggestions";
-import LinkedInIntegration from "@/components/api-integration/LinkedInIntegration";
-import GitHubIntegration from "@/components/api-integration/GitHubIntegration";
-import GeminiAIIntegration from "@/components/api-integration/GeminiAIIntegration";
+import { useState, useEffect } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { Button } from "@/components/ui/button"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
+import { ChevronLeft, ChevronRight, Plus, Trash2, Save, Eye } from "lucide-react"
+import { useResume } from "@/context/resume-context"
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
+import { DndProvider } from "react-dnd"
+import { HTML5Backend } from "react-dnd-html5-backend"
+import DraggableSection from "@/components/DraggableSection"
+import ResumePreviewPane from "@/components/ResumePreviewPane"
+import StyleEditor, { type ResumeStyles } from "@/components/StyleEditor"
+import CustomSectionEditor from "@/components/CustomSectionEditor"
+import AISuggestions from "@/components/AISuggestions"
+import LinkedInIntegration from "@/components/api-integration/LinkedInIntegration"
+import GitHubIntegration from "@/components/api-integration/GitHubIntegration"
+import GeminiAIIntegration from "@/components/api-integration/GeminiAIIntegration"
 
 const formSchema = z.object({
   personalInfo: z.object({
@@ -57,18 +55,18 @@ const formSchema = z.object({
       name: z.string().min(1, { message: "Skill name is required." }),
     }),
   ),
-});
+})
 
-function ResumeForm() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const templateParam = searchParams.get("template") || "minimal";
+export default function ResumeForm() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const templateParam = searchParams.get("template") || "minimal"
 
-  const [activeTab, setActiveTab] = useState("personal-info");
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [jobDescription, setJobDescription] = useState("");
-  const [customSections, setCustomSections] = useState([]);
-  const [showIntegrations, setShowIntegrations] = useState(false);
+  const [activeTab, setActiveTab] = useState("personal-info")
+  const [previewOpen, setPreviewOpen] = useState(false)
+  const [jobDescription, setJobDescription] = useState("")
+  const [customSections, setCustomSections] = useState([])
+  const [showIntegrations, setShowIntegrations] = useState(false)
 
   const [resumeStyles, setResumeStyles] = useState<ResumeStyles>({
     fontFamily: "Arial, sans-serif",
@@ -79,9 +77,9 @@ function ResumeForm() {
     spacing: 24,
     sectionOrder: ["summary", "experience", "education", "skills"],
     hiddenSections: [],
-  });
+  })
 
-  const { resumeData, updateResumeData, selectedTemplate, setSelectedTemplate } = useResume();
+  const { resumeData, updateResumeData, selectedTemplate, setSelectedTemplate } = useResume()
 
   const [sections, setSections] = useState([
     { id: "personal-info", title: "Personal Information" },
@@ -91,20 +89,20 @@ function ResumeForm() {
     { id: "style", title: "Style & Formatting" },
     { id: "custom", title: "Custom Sections" },
     { id: "integrations", title: "Import & AI" },
-  ]);
+  ])
 
   const moveSection = (dragIndex, hoverIndex) => {
-    const newSections = [...sections];
-    const draggedSection = newSections[dragIndex];
-    newSections.splice(dragIndex, 1);
-    newSections.splice(hoverIndex, 0, draggedSection);
-    setSections(newSections);
-  };
+    const newSections = [...sections]
+    const draggedSection = newSections[dragIndex]
+    newSections.splice(dragIndex, 1)
+    newSections.splice(hoverIndex, 0, draggedSection)
+    setSections(newSections)
+  }
 
   // Set the selected template based on the URL parameter
   useEffect(() => {
-    setSelectedTemplate(templateParam);
-  }, [templateParam, setSelectedTemplate]);
+    setSelectedTemplate(templateParam)
+  }, [templateParam, setSelectedTemplate])
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -127,33 +125,33 @@ function ResumeForm() {
           : [{ institution: "", degree: "", fieldOfStudy: "", graduationDate: "" }],
       skills: resumeData.skills.length > 0 ? resumeData.skills : [{ name: "" }],
     },
-  });
+  })
 
   // Update the context data when form values change
-  const formValues = form.watch();
+  const formValues = form.watch()
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       updateResumeData({
         ...formValues,
         styles: resumeStyles,
         customSections,
-      });
-    }, 300);
+      })
+    }, 300)
 
-    return () => clearTimeout(timeoutId);
-  }, [formValues, resumeStyles, customSections, updateResumeData]);
+    return () => clearTimeout(timeoutId)
+  }, [formValues, resumeStyles, customSections, updateResumeData])
 
   function onSubmit(values) {
     updateResumeData({
       ...values,
       styles: resumeStyles,
       customSections,
-    });
-    router.push(`/preview/${selectedTemplate}`);
+    })
+    router.push(`/preview/${selectedTemplate}`)
   }
 
   function addExperience() {
-    const currentExperience = form.getValues("experience");
+    const currentExperience = form.getValues("experience")
     form.setValue("experience", [
       ...currentExperience,
       {
@@ -163,19 +161,19 @@ function ResumeForm() {
         endDate: "",
         description: "",
       },
-    ]);
+    ])
   }
 
   function removeExperience(index) {
-    const currentExperience = form.getValues("experience");
+    const currentExperience = form.getValues("experience")
     form.setValue(
       "experience",
       currentExperience.filter((_, i) => i !== index),
-    );
+    )
   }
 
   function addEducation() {
-    const currentEducation = form.getValues("education");
+    const currentEducation = form.getValues("education")
     form.setValue("education", [
       ...currentEducation,
       {
@@ -184,43 +182,32 @@ function ResumeForm() {
         fieldOfStudy: "",
         graduationDate: "",
       },
-    ]);
+    ])
   }
 
   function removeEducation(index) {
-    const currentEducation = form.getValues("education");
+    const currentEducation = form.getValues("education")
     form.setValue(
       "education",
       currentEducation.filter((_, i) => i !== index),
-    );
+    )
   }
 
   function addSkill() {
-    const currentSkills = form.getValues("skills");
-    form.setValue("skills", [...currentSkills, { name: "" }]);
+    const currentSkills = form.getValues("skills")
+    form.setValue("skills", [...currentSkills, { name: "" }])
   }
 
   function removeSkill(index) {
-    const currentSkills = form.getValues("skills");
+    const currentSkills = form.getValues("skills")
     form.setValue(
       "skills",
       currentSkills.filter((_, i) => i !== index),
-    );
+    )
   }
 
   const handleApplySuggestion = (suggestion) => {
-    form.setValue("personalInfo.summary", suggestion);
-  };
-
-  // Ensure DndProvider and HTML5Backend are only used on the client
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    return null; // Render nothing on the server
+    form.setValue("personalInfo.summary", suggestion)
   }
 
   return (
@@ -254,38 +241,10 @@ function ResumeForm() {
                 </div>
               </DialogContent>
             </Dialog>
-            <div className="ml-auto flex gap-2">
-              <Button
-                onClick={() => {
-                  form.handleSubmit((values) => {
-                    updateResumeData({
-                      ...values,
-                      styles: resumeStyles,
-                      customSections,
-                    });
-                    generateResumePdf('resume-preview', 'my-resume');
-                  })();
-                }}
-              >
-                <Save className="mr-2 h-4 w-4" />
-                Download PDF
-              </Button>
-              <Button
-                onClick={() => {
-                  form.handleSubmit((values) => {
-                    updateResumeData({
-                      ...values,
-                      styles: resumeStyles,
-                      customSections,
-                    });
-                    generateResumeDocx(values, 'my-resume');
-                  })();
-                }}
-              >
-                <Save className="mr-2 h-4 w-4" />
-                Download DOCX
-              </Button>
-            </div>
+            <Button onClick={form.handleSubmit(onSubmit)}>
+              <Save className="mr-2 h-4 w-4" />
+              Save & Preview
+            </Button>
           </div>
         </div>
 
@@ -745,14 +704,6 @@ function ResumeForm() {
         </div>
       </div>
     </DndProvider>
-  );
+  )
 }
 
-// Wrap the ResumeForm component with ResumeProvider
-export default function Page() {
-  return (
-    <ResumeProvider>
-      <ResumeForm />
-    </ResumeProvider>
-  );
-}
