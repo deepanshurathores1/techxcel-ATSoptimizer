@@ -11,7 +11,7 @@ import { UserCircle } from "lucide-react"
 
 const NAV_LINKS = [
   { name: "Home", href: "/" },
-  { name: "Build", href: "/build" },
+  { name: "Build", href: "/form" },
   { name: "Analyse", href: "/analyse" },
   { name: "FAQ", href: "/faq" },
   { name: "Features", href: "/features" },

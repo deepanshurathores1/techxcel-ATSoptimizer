@@ -1,7 +1,6 @@
 "use client";
-
 import type React from "react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -23,13 +22,11 @@ import {
   BookOpen,
   Linkedin,
   Github,
-  Camera,
   AlertCircle,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useResume } from "@/context/resume-context";
 import { VerificationDashboard } from "@/components/verification/VerificationDashboard";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Dialog,
   DialogContent,
@@ -50,13 +47,10 @@ export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("personal");
   const [isLoading, setIsLoading] = useState(false);
   const [profileData, setProfileData] = useState(resumeData);
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [isUploading, setIsUploading] = useState(false);
   const [importSource, setImportSource] = useState<"linkedin" | "github" | null>(null);
   const [importProgress, setImportProgress] = useState(0);
   const [isClient, setIsClient] = useState(false); // Track client-side rendering
   const [theme, setTheme] = useState("light"); // Track theme (e.g., dark mode)
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Set active tab from URL if provided
   useEffect(() => {
@@ -110,6 +104,141 @@ export default function ProfilePage() {
     fetchProfileData();
   }, [updateResumeData]);
 
+  // Handle saving profile data
+  const handleSaveProfile = async () => {
+    try {
+      setIsLoading(true);
+
+      const response = await fetch("/api/profile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(profileData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          toast({ title: "Profile Saved", description: "Your profile has been successfully saved." });
+        } else {
+          toast({ title: "Error", description: "Failed to save profile.", variant: "destructive" });
+        }
+      } else {
+        toast({ title: "Error", description: "Failed to save profile.", variant: "destructive" });
+      }
+    } catch (error) {
+      console.error("Error saving profile:", error);
+      toast({ title: "Error", description: "Failed to save profile.", variant: "destructive" });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Handle changes to personal info fields
+  const handlePersonalInfoChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setProfileData((prev) => ({
+      ...prev,
+      personalInfo: {
+        ...prev.personalInfo,
+        [name]: value,
+      },
+    }));
+  };
+
+  // Handle adding a new experience entry
+  const handleAddExperience = () => {
+    setProfileData((prev) => ({
+      ...prev,
+      experience: [
+        ...(prev.experience || []),
+        {
+          id: `exp-${(prev.experience?.length || 0) + 1}`, // Generate a unique ID
+          company: "",
+          position: "",
+          location: "",
+          startDate: "",
+          endDate: "",
+          description: "",
+        },
+      ],
+    }));
+  };
+
+  // Handle changes to experience fields
+  const handleExperienceChange = (index: number, field: string, value: string) => {
+    setProfileData((prev) => {
+      const updatedExperience = [...(prev.experience || [])];
+      updatedExperience[index] = {
+        ...updatedExperience[index],
+        [field]: value,
+      };
+      return {
+        ...prev,
+        experience: updatedExperience,
+      };
+    });
+  };
+
+  // Handle removing an experience entry
+  const handleRemoveExperience = (index: number) => {
+    setProfileData((prev) => {
+      const updatedExperience = [...(prev.experience || [])];
+      updatedExperience.splice(index, 1);
+      return {
+        ...prev,
+        experience: updatedExperience,
+      };
+    });
+  };
+
+  // Handle adding a new project entry
+  const handleAddProject = () => {
+    setProfileData((prev) => ({
+      ...prev,
+      projects: [
+        ...(prev.projects || []),
+        {
+          id: `proj-${(prev.projects?.length || 0) + 1}`, // Generate a unique ID
+          name: "",
+          description: "",
+          url: "",
+          technologies: [],
+          startDate: "",
+          endDate: "",
+        },
+      ],
+    }));
+  };
+
+  // Handle changes to project fields
+  const handleProjectChange = (index: number, field: string, value: string | string[]) => {
+    setProfileData((prev) => {
+      const updatedProjects = [...(prev.projects || [])];
+      updatedProjects[index] = {
+        ...updatedProjects[index],
+        [field]: value,
+      };
+      return {
+        ...prev,
+        projects: updatedProjects,
+      };
+    });
+  };
+
+  // Handle removing a project entry
+  const handleRemoveProject = (index: number) => {
+    setProfileData((prev) => {
+      const updatedProjects = [...(prev.projects || [])];
+      updatedProjects.splice(index, 1);
+      return {
+        ...prev,
+        projects: updatedProjects,
+      };
+    });
+  };
+
   // Handle LinkedIn data import
   const handleLinkedInImport = async () => {
     if (!isClient) return; // Ensure this runs only on the client
@@ -147,7 +276,6 @@ export default function ProfilePage() {
                     title: linkedInData.headline || profileData.personalInfo?.title,
                     summary: linkedInData.summary || profileData.personalInfo?.summary,
                     location: linkedInData.location || profileData.personalInfo?.location,
-                    profilePicture: linkedInData.profilePicture || profileData.personalInfo?.profilePicture,
                   },
                   experience: linkedInData.positions?.map((position: any) => ({
                     id: `exp-${profileData.experience.length + 1}`, // Predictable ID
@@ -280,7 +408,7 @@ export default function ProfilePage() {
             <h1 className="text-xl font-bold">ResumeBuilder</h1>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={() => router.push("/")}>
+            <Button variant="outline" size="sm" onClick={() => router.push("/dashboard")}>
               Back to Dashboard
             </Button>
             <Button variant="outline" size="sm" onClick={() => router.push("/form")}>
@@ -293,40 +421,6 @@ export default function ProfilePage() {
       <main className="flex-1 container py-6">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
           <div className="flex items-center gap-4">
-            <div className="relative">
-              <Avatar className="h-20 w-20">
-                <AvatarImage
-                  src={profileData.personalInfo?.profilePicture || ""}
-                  alt={profileData.personalInfo?.fullName || "Profile"}
-                />
-                <AvatarFallback>
-                  {profileData.personalInfo?.fullName
-                    ? profileData.personalInfo.fullName
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")
-                        .toUpperCase()
-                        .substring(0, 2)
-                    : "U"}
-                </AvatarFallback>
-              </Avatar>
-              <Button
-                size="icon"
-                variant="secondary"
-                className="absolute bottom-0 right-0 h-6 w-6 rounded-full"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <Camera className="h-3 w-3" />
-                <span className="sr-only">Change profile picture</span>
-              </Button>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleProfilePictureUpload}
-              />
-            </div>
             <div>
               <h1 className="text-3xl font-bold">{profileData.personalInfo?.fullName || "My Profile"}</h1>
               <p className="text-muted-foreground">
@@ -415,15 +509,6 @@ export default function ProfilePage() {
             </Button>
           </div>
         </div>
-
-        {isUploading && (
-          <div className="mb-6">
-            <Progress value={uploadProgress} className="mb-2" />
-            <p className="text-center text-sm text-muted-foreground">
-              {uploadProgress < 100 ? "Uploading profile picture..." : "Upload complete!"}
-            </p>
-          </div>
-        )}
 
         <div className="space-y-6">
           <Tabs defaultValue="personal" value={activeTab} onValueChange={setActiveTab}>

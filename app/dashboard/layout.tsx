@@ -22,6 +22,7 @@ export default function RootLayout({
     <html lang="en" className="light" style={{ colorScheme: "light" }}>
       <body
         className={`${inter.className} min-h-screen bg-background text-foreground antialiased overflow-x-hidden`}
+        suppressHydrationWarning // Suppress hydration warnings for this element
       >
         <ResumeProvider>
           {children}

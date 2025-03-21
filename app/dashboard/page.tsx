@@ -40,7 +40,7 @@ export default function Dashboard() {
   return (
     <div className="flex min-h-screen flex-col">
       <Nav2 />
-      <main className="flex-1 container py-12"> {/* Increased padding-top for more space below the navbar */}
+      <main className="flex-1 container py-12">
         <Tabs defaultValue="templates" className="space-y-4" onValueChange={setActiveTab}>
           <div className="flex items-center justify-between">
             <TabsList>
@@ -89,24 +89,29 @@ export default function Dashboard() {
                 {filteredTemplates.map((template, index) => (
                   <Card
                     key={template.id}
-                    className="overflow-hidden flex flex-col template-card hover:shadow-lg transition-shadow duration-300"
+                    className="overflow-hidden flex flex-col template-card hover:shadow-xl transition-all duration-300 ease-in-out group hover:-translate-y-2"
                     style={{ animationDelay: `${index * 0.05}s` }}
                   >
-                    <div className="relative bg-muted" style={{ aspectRatio: "1/1.414" }}>
+                    {/* Image Container with Margins */}
+                    <div className="relative bg-muted p-4" style={{ aspectRatio: "1/1.414" }}>
                       <img
                         src={template.image || "/placeholder.svg?height=300&width=212"}
                         alt={template.name}
-                        className="object-cover w-full h-full"
+                        className="object-cover w-full h-full rounded-lg group-hover:scale-105 transition-transform duration-300"
                       />
-                      <div className="absolute top-2 right-2">
+                      <div className="absolute top-4 right-4">
                         <Badge variant={template.isNew ? "default" : "outline"}>
                           {template.isNew ? "New" : template.category}
                         </Badge>
                       </div>
                     </div>
+
+                    {/* Card Content */}
                     <CardHeader>
-                      <CardTitle>{template.name}</CardTitle>
-                      <CardDescription>{template.description}</CardDescription>
+                      <CardTitle className="text-lg font-semibold">{template.name}</CardTitle>
+                      <CardDescription className="text-sm text-muted-foreground">
+                        {template.description}
+                      </CardDescription>
                       <div className="flex flex-wrap gap-1 mt-2">
                         {template.tags.map((tag) => (
                           <Badge key={tag} variant="secondary" className="text-xs">
@@ -115,18 +120,20 @@ export default function Dashboard() {
                         ))}
                       </div>
                     </CardHeader>
+
+                    {/* Card Footer with Buttons */}
                     <CardFooter className="flex justify-between mt-auto">
                       <Button
                         variant="outline"
                         onClick={() => router.push(`/preview/${template.id}`)}
-                        className="transition-all hover:shadow-md"
+                        className="transition-all hover:shadow-md hover:bg-muted/50"
                       >
                         <Eye className="mr-2 h-4 w-4" />
                         Preview
                       </Button>
                       <Button
                         onClick={() => handleSelectTemplate(template.id)}
-                        className="transition-all hover:shadow-md"
+                        className="transition-all hover:shadow-md hover:bg-primary/90"
                       >
                         Use Template
                       </Button>
@@ -139,7 +146,7 @@ export default function Dashboard() {
 
           <TabsContent value="my-resumes">
             <div className="space-y-4">
-              <Card className="transition-all hover:shadow-md">
+              <Card className="transition-all hover:shadow-md hover:-translate-y-1">
                 <CardHeader>
                   <CardTitle>Software Developer Resume</CardTitle>
                   <CardDescription>Last edited: 2 days ago</CardDescription>

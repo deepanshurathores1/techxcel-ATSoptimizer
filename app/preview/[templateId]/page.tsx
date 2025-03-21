@@ -1,17 +1,18 @@
-"use client"
+"use client"; // Ensure this component is rendered on the client side
 
-import dynamic from "next/dynamic"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { ChevronLeft, FileText, Filter, Tag } from "lucide-react"
-import { useResume } from "@/context/resume-context"
-import DownloadOptions from "@/components/DownloadOptions"
-import { Separator } from "@/components/ui/separator"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { allTemplates, getTemplateById, TemplateCategory } from "@/data/templates"
+import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { ChevronLeft, FileText, Filter, Tag } from "lucide-react";
+import { useResume } from "@/context/resume-context";
+import DownloadOptions from "@/components/DownloadOptions";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { allTemplates, getTemplateById, TemplateCategory } from "@/data/templates";
+import { useRef, useState, useEffect, useMemo, useCallback, use } from "react"; // Import `use` from React
 
 // Dynamically import all templates to reduce initial load time
 const templates = {
@@ -50,7 +51,7 @@ const templates = {
   minimalistPro: dynamic(() => import("@/components/templates/minimalist-pro-template")),
   creativeDirector: dynamic(() => import("@/components/templates/creative-director-template")),
   uxDesigner: dynamic(() => import("@/components/templates/ux-designer-template")),
-}
+};
 
 // Default placeholder data for preview
 const placeholderData = {
@@ -116,49 +117,75 @@ const placeholderData = {
     hiddenSections: [],
   },
   customSections: [],
-}
+};
 
 export default function PreviewPage({ params }: { params: { templateId: string } }) {
-  const router = useRouter()
-  const { templateId } = params
-  const resumeRef = useRef<HTMLDivElement>(null)
-  const { resumeData, selectedTemplate, setSelectedTemplate } = useResume()
-  const [previewData, setPreviewData] = useState(placeholderData)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [activeCategory, setActiveCategory] = useState<string>("all")
-  const [activeTags, setActiveTags] = useState<string[]>([])
+  const router = useRouter();
+  const resolvedParams = use(params); // Unwrap `params` using `React.use()`
+  const { templateId } = resolvedParams; // Destructure `templateId` from resolved `params`
+  const resumeRef = useRef<HTMLDivElement>(null);
+  const { resumeData, selectedTemplate, setSelectedTemplate } = useResume();
+  const [previewData, setPreviewData] = useState(placeholderData);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [activeTags, setActiveTags] = useState<string[]>([]);
 
   // Update preview data and selected template
   useEffect(() => {
     if (templateId !== selectedTemplate) {
-      setSelectedTemplate(templateId)
+      setSelectedTemplate(templateId);
     }
 
     if (resumeData.personalInfo?.fullName) {
-      setPreviewData(resumeData)
+      setPreviewData(resumeData);
     } else {
       setPreviewData({
         ...placeholderData,
         styles: resumeData.styles || placeholderData.styles,
-      })
+      });
     }
-  }, [templateId, selectedTemplate, setSelectedTemplate, resumeData])
+  }, [templateId, selectedTemplate, setSelectedTemplate, resumeData]);
 
   // Load the selected template dynamically
-  const [Template, setTemplate] = useState<React.ComponentType<{ data: any }> | null>(null)
+  const [Template, setTemplate] = useState<React.ComponentType<{ data: any }> | null>(null);
+  const [templateError, setTemplateError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadTemplate = async () => {
-      const templateModule = await templates[selectedTemplate]
-      setTemplate(() => templateModule.default)
-    }
-    loadTemplate()
-  }, [selectedTemplate])
+      try {
+        const templateModule = await templates[selectedTemplate]();
+        if (!templateModule || !templateModule.default) {
+          throw new Error(`Template "${selectedTemplate}" not found or does not have a default export.`);
+        }
+        setTemplate(() => templateModule.default);
+        setTemplateError(null); // Clear any previous errors
+      } catch (error) {
+        console.error("Error loading template:", error);
+        setTemplateError(`Failed to load template: ${selectedTemplate}. Error: ${error.message}`);
+        setTemplate(null); // Reset the template
+      }
+    };
+    loadTemplate();
+  }, [selectedTemplate]);
 
   const TemplateComponent = useMemo(() => {
-    if (!Template) return null
-    return <Template data={previewData} />
-  }, [Template, previewData])
+    if (templateError) {
+      return (
+        <div className="text-red-500">
+          <p>{templateError}</p>
+          <p>Loading default template...</p>
+          {/* Render the minimal template with a warning */}
+          <div className="border border-red-500 p-4">
+            <templates.minimal data={previewData} />
+          </div>
+        </div>
+      );
+    }
+    if (!Template) {
+      return <div>Loading template...</div>; // Fallback while loading
+    }
+    return <Template data={previewData} />;
+  }, [Template, previewData, templateError]);
 
   // Filter templates based on search, category, and tags
   const matchesSearch = useCallback(
@@ -167,41 +194,41 @@ export default function PreviewPage({ params }: { params: { templateId: string }
         searchQuery === "" ||
         template.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         template.description.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+      );
     },
     [searchQuery]
-  )
+  );
 
   const matchesCategory = useCallback(
     (template: typeof allTemplates[number]) => {
-      return activeCategory === "all" || template.category === activeCategory
+      return activeCategory === "all" || template.category === activeCategory;
     },
     [activeCategory]
-  )
+  );
 
   const matchesTags = useCallback(
     (template: typeof allTemplates[number]) => {
-      return activeTags.length === 0 || activeTags.some((tag) => template.tags.includes(tag))
+      return activeTags.length === 0 || activeTags.some((tag) => template.tags.includes(tag));
     },
     [activeTags]
-  )
+  );
 
   const filteredTemplates = useMemo(() => {
-    return allTemplates.filter((template) => matchesSearch(template) && matchesCategory(template) && matchesTags(template))
-  }, [matchesSearch, matchesCategory, matchesTags])
+    return allTemplates.filter((template) => matchesSearch(template) && matchesCategory(template) && matchesTags(template));
+  }, [matchesSearch, matchesCategory, matchesTags]);
 
   // Get all unique tags from templates
   const allTags = useMemo(() => {
-    return Array.from(new Set(allTemplates.flatMap((template) => template.tags))).sort()
-  }, [])
+    return Array.from(new Set(allTemplates.flatMap((template) => template.tags))).sort();
+  }, []);
 
   // Toggle tag selection
   const toggleTag = useCallback((tag: string) => {
-    setActiveTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]))
-  }, [])
+    setActiveTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]));
+  }, []);
 
   // Get current template details
-  const currentTemplate = getTemplateById(selectedTemplate)
+  const currentTemplate = getTemplateById(selectedTemplate);
 
   return (
     <div className="container py-6">
@@ -295,8 +322,8 @@ export default function PreviewPage({ params }: { params: { templateId: string }
                     variant={selectedTemplate === template.id ? "default" : "ghost"}
                     className="w-full justify-start text-left"
                     onClick={() => {
-                      setSelectedTemplate(template.id)
-                      router.replace(`/preview/${template.id}`)
+                      setSelectedTemplate(template.id);
+                      router.replace(`/preview/${template.id}`);
                     }}
                   >
                     <span className="truncate">{template.name}</span>
@@ -338,5 +365,5 @@ export default function PreviewPage({ params }: { params: { templateId: string }
         </div>
       </div>
     </div>
-  )
+  );
 }

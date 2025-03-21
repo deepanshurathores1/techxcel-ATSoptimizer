@@ -26,7 +26,7 @@ export const allTemplates: TemplateData[] = [
     description: "Clean and straightforward design that focuses on content",
     category: TemplateCategory.SIMPLE,
     tags: ["Clean", "ATS-Friendly", "Minimalist"],
-    image: "/placeholder.svg?height=300&width=400&text=Minimal",
+    image: "/minimal.png?height=300&width=400&text=Minimal",
   },
   {
     id: "professional",
@@ -34,7 +34,7 @@ export const allTemplates: TemplateData[] = [
     description: "Traditional format with a modern touch",
     category: TemplateCategory.PROFESSIONAL,
     tags: ["Business", "Corporate", "ATS-Friendly"],
-    image: "/placeholder.svg?height=300&width=400&text=Professional",
+    image: "/professional.png?height=300&width=400&text=Professional",
   },
   {
     id: "executive",
@@ -42,7 +42,7 @@ export const allTemplates: TemplateData[] = [
     description: "Sophisticated design for senior positions",
     category: TemplateCategory.EXECUTIVE,
     tags: ["Leadership", "Management", "Corporate"],
-    image: "/placeholder.svg?height=300&width=400&text=Executive",
+    image: "/executive.png?height=300&width=400&text=Executive",
   },
   {
     id: "modern",
@@ -50,7 +50,7 @@ export const allTemplates: TemplateData[] = [
     description: "Contemporary layout with subtle design elements",
     category: TemplateCategory.MODERN,
     tags: ["Creative", "Clean", "Stylish"],
-    image: "/placeholder.svg?height=300&width=400&text=Modern",
+    image: "/modern.png?height=300&width=400&text=Modern",
   },
   {
     id: "technical",
@@ -58,7 +58,7 @@ export const allTemplates: TemplateData[] = [
     description: "Optimized for technical roles and skills",
     category: TemplateCategory.TECHNICAL,
     tags: ["IT", "Engineering", "Developer"],
-    image: "/placeholder.svg?height=300&width=400&text=Technical",
+    image: "/technical.png?height=300&width=400&text=Technical",
   },
   {
     id: "clean",
@@ -66,7 +66,7 @@ export const allTemplates: TemplateData[] = [
     description: "Simple and elegant design with clear sections",
     category: TemplateCategory.SIMPLE,
     tags: ["Minimalist", "ATS-Friendly", "Professional"],
-    image: "/placeholder.svg?height=300&width=400&text=Clean",
+    image: "/clean.png?height=300&width=400&text=Clean",
   },
   {
     id: "simple",
@@ -74,7 +74,7 @@ export const allTemplates: TemplateData[] = [
     description: "No-frills layout that puts content first",
     category: TemplateCategory.SIMPLE,
     tags: ["Basic", "ATS-Friendly", "Clean"],
-    image: "/placeholder.svg?height=300&width=400&text=Simple",
+    image: "/simple.png?height=300&width=400&text=Simple",
   },
   {
     id: "elegant",
@@ -82,7 +82,7 @@ export const allTemplates: TemplateData[] = [
     description: "Refined design with sophisticated typography",
     category: TemplateCategory.PROFESSIONAL,
     tags: ["Stylish", "Professional", "Serif"],
-    image: "/placeholder.svg?height=300&width=400&text=Elegant",
+    image: "/elegant.png?height=300&width=400&text=Elegant",
   },
   {
     id: "compact",
@@ -90,7 +90,7 @@ export const allTemplates: TemplateData[] = [
     description: "Space-efficient layout for comprehensive resumes",
     category: TemplateCategory.PROFESSIONAL,
     tags: ["Dense", "Comprehensive", "ATS-Friendly"],
-    image: "/placeholder.svg?height=300&width=400&text=Compact",
+    image: "/compact.png?height=300&width=400&text=Compact",
   },
   {
     id: "minimalist",
@@ -98,7 +98,7 @@ export const allTemplates: TemplateData[] = [
     description: "Ultra-clean design with perfect white space balance",
     category: TemplateCategory.SIMPLE,
     tags: ["Minimal", "Clean", "ATS-Friendly"],
-    image: "/placeholder.svg?height=300&width=400&text=Minimalist",
+    image: "/minimalist.png?height=300&width=400&text=Minimalist",
   },
 
   // New templates
@@ -108,7 +108,7 @@ export const allTemplates: TemplateData[] = [
     description: "Professional design for corporate environments",
     category: TemplateCategory.PROFESSIONAL,
     tags: ["Business", "Corporate", "Traditional"],
-    image: "/placeholder.svg?height=300&width=400&text=Corporate",
+    image: "/corporate.png?height=300&width=400&text=Corporate",
     isNew: true,
   },
   {
@@ -117,7 +117,7 @@ export const allTemplates: TemplateData[] = [
     description: "Unique layout for creative professionals",
     category: TemplateCategory.CREATIVE,
     tags: ["Design", "Artistic", "Unique"],
-    image: "/placeholder.svg?height=300&width=400&text=Creative",
+    image: "/creative.png?height=300&width=400&text=Creative",
     isNew: true,
   },
   {
@@ -126,7 +126,7 @@ export const allTemplates: TemplateData[] = [
     description: "Contemporary design for tech industry professionals",
     category: TemplateCategory.TECHNICAL,
     tags: ["IT", "Modern", "Tech"],
-    image: "/placeholder.svg?height=300&width=400&text=Tech+Modern",
+    image: "/tech-modern.png?height=300&width=400&text=Tech+Modern",
     isNew: true,
   },
   {
@@ -135,7 +135,7 @@ export const allTemplates: TemplateData[] = [
     description: "Structured layout for academic and research positions",
     category: TemplateCategory.PROFESSIONAL,
     tags: ["Research", "Education", "Detailed"],
-    image: "/placeholder.svg?height=300&width=400&text=Academic",
+    image: "/academic.png?height=300&width=400&text=Academic",
     isNew: true,
   },
   {
@@ -144,7 +144,7 @@ export const allTemplates: TemplateData[] = [
     description: "Fresh and dynamic design for startup environments",
     category: TemplateCategory.MODERN,
     tags: ["Innovative", "Dynamic", "Contemporary"],
-    image: "/placeholder.svg?height=300&width=400&text=Startup",
+    image: "/startup.png?height=300&width=400&text=Startup",
     isNew: true,
   },
   {
@@ -153,7 +153,7 @@ export const allTemplates: TemplateData[] = [
     description: "Premium design for C-level executives",
     category: TemplateCategory.EXECUTIVE,
     tags: ["Leadership", "Executive", "Premium"],
-    image: "/placeholder.svg?height=300&width=400&text=Executive+Plus",
+    image: "/executive-plus.png?height=300&width=400&text=Executive+Plus",
     isNew: true,
   },
   {
@@ -162,7 +162,7 @@ export const allTemplates: TemplateData[] = [
     description: "Specialized layout for software developers",
     category: TemplateCategory.TECHNICAL,
     tags: ["Coding", "Programming", "IT"],
-    image: "/placeholder.svg?height=300&width=400&text=Developer",
+    image: "/developer.png?height=300&width=400&text=Developer",
     isNew: true,
   },
   {
@@ -171,7 +171,7 @@ export const allTemplates: TemplateData[] = [
     description: "Professional design for consultants and advisors",
     category: TemplateCategory.PROFESSIONAL,
     tags: ["Consulting", "Business", "Advisory"],
-    image: "/placeholder.svg?height=300&width=400&text=Consultant",
+    image: "/consultant.png?height=300&width=400&text=Consultant",
     isNew: true,
   },
   {
@@ -180,7 +180,7 @@ export const allTemplates: TemplateData[] = [
     description: "Clean design for recent graduates",
     category: TemplateCategory.SIMPLE,
     tags: ["Entry-Level", "Student", "First Job"],
-    image: "/placeholder.svg?height=300&width=400&text=Graduate",
+    image: "/graduate.png?height=300&width=400&text=Graduate",
     isNew: true,
   },
   {
@@ -189,7 +189,7 @@ export const allTemplates: TemplateData[] = [
     description: "Traditional chronological format, highly ATS-friendly",
     category: TemplateCategory.SIMPLE,
     tags: ["Traditional", "ATS-Optimized", "Timeline"],
-    image: "/placeholder.svg?height=300&width=400&text=Chronological",
+    image: "/chronological.png?height=300&width=400&text=Chronological",
     isNew: true,
   },
   {
@@ -198,7 +198,7 @@ export const allTemplates: TemplateData[] = [
     description: "Skills-focused layout for career changers",
     category: TemplateCategory.PROFESSIONAL,
     tags: ["Skills-Based", "Career Change", "Versatile"],
-    image: "/placeholder.svg?height=300&width=400&text=Functional",
+    image: "/functional.png?height=300&width=400&text=Functional",
     isNew: true,
   },
   {
@@ -207,7 +207,7 @@ export const allTemplates: TemplateData[] = [
     description: "Combines chronological and functional formats",
     category: TemplateCategory.PROFESSIONAL,
     tags: ["Combination", "Versatile", "Comprehensive"],
-    image: "/placeholder.svg?height=300&width=400&text=Hybrid",
+    image: "/hybrid.png?height=300&width=400&text=Hybrid",
     isNew: true,
   },
   {
@@ -216,7 +216,7 @@ export const allTemplates: TemplateData[] = [
     description: "Visual elements while maintaining ATS compatibility",
     category: TemplateCategory.CREATIVE,
     tags: ["Visual", "Creative", "Graphic"],
-    image: "/placeholder.svg?height=300&width=400&text=Infographic",
+    image: "/infographic.png?height=300&width=400&text=Infographic",
     isNew: true,
   },
   {
@@ -225,7 +225,7 @@ export const allTemplates: TemplateData[] = [
     description: "Format suitable for international applications",
     category: TemplateCategory.PROFESSIONAL,
     tags: ["Global", "Multilingual", "International"],
-    image: "/placeholder.svg?height=300&width=400&text=International",
+    image: "/international.png?height=300&width=400&text=International",
     isNew: true,
   },
   {
@@ -234,7 +234,7 @@ export const allTemplates: TemplateData[] = [
     description: "Specialized format for government positions",
     category: TemplateCategory.PROFESSIONAL,
     tags: ["Government", "Public Sector", "Detailed"],
-    image: "/placeholder.svg?height=300&width=400&text=Federal",
+    image: "/federal.png?height=300&width=400&text=Federal",
     isNew: true,
   },
   {
@@ -243,7 +243,7 @@ export const allTemplates: TemplateData[] = [
     description: "Tailored for medical and healthcare professionals",
     category: TemplateCategory.PROFESSIONAL,
     tags: ["Medical", "Healthcare", "Clinical"],
-    image: "/placeholder.svg?height=300&width=400&text=Healthcare",
+    image: "/healthcare.png?height=300&width=400&text=Healthcare",
     isNew: true,
   },
   {
@@ -252,7 +252,7 @@ export const allTemplates: TemplateData[] = [
     description: "Professional format for legal professionals",
     category: TemplateCategory.PROFESSIONAL,
     tags: ["Law", "Attorney", "Formal"],
-    image: "/placeholder.svg?height=300&width=400&text=Legal",
+    image: "/legal.png?height=300&width=400&text=Legal",
     isNew: true,
   },
   {
@@ -261,7 +261,7 @@ export const allTemplates: TemplateData[] = [
     description: "Dynamic design for marketing professionals",
     category: TemplateCategory.CREATIVE,
     tags: ["Marketing", "Digital", "Creative"],
-    image: "/placeholder.svg?height=300&width=400&text=Marketing",
+    image: "/marketing.png?height=300&width=400&text=Marketing",
     isNew: true,
   },
   {
@@ -270,7 +270,7 @@ export const allTemplates: TemplateData[] = [
     description: "Technical layout for engineering disciplines",
     category: TemplateCategory.TECHNICAL,
     tags: ["Engineering", "Technical", "Detailed"],
-    image: "/placeholder.svg?height=300&width=400&text=Engineering",
+    image: "/engineering.png?height=300&width=400&text=Engineering",
     isNew: true,
   },
   {
@@ -279,7 +279,7 @@ export const allTemplates: TemplateData[] = [
     description: "Professional design for finance industry",
     category: TemplateCategory.PROFESSIONAL,
     tags: ["Finance", "Banking", "Corporate"],
-    image: "/placeholder.svg?height=300&width=400&text=Finance",
+    image: "/finance.png?height=300&width=400&text=Finance",
     isNew: true,
   },
   // Additional templates
@@ -289,7 +289,7 @@ export const allTemplates: TemplateData[] = [
     description: "Specialized for data scientists and analysts",
     category: TemplateCategory.TECHNICAL,
     tags: ["Data", "Analytics", "Technical"],
-    image: "/placeholder.svg?height=300&width=400&text=Data+Science",
+    image: "/data-science.png?height=300&width=400&text=Data+Science",
     isNew: true,
   },
   {
@@ -298,7 +298,7 @@ export const allTemplates: TemplateData[] = [
     description: "Highlights project management skills and achievements",
     category: TemplateCategory.PROFESSIONAL,
     tags: ["Management", "Leadership", "Projects"],
-    image: "/placeholder.svg?height=300&width=400&text=Project+Manager",
+    image: "/project-manager.png?height=300&width=400&text=Project+Manager",
     isNew: true,
   },
   {
@@ -307,7 +307,7 @@ export const allTemplates: TemplateData[] = [
     description: "Professional minimalist design with subtle accents",
     category: TemplateCategory.SIMPLE,
     tags: ["Minimal", "Professional", "Clean"],
-    image: "/placeholder.svg?height=300&width=400&text=Minimalist+Pro",
+    image: "/minimalist-pro.png?height=300&width=400&text=Minimalist+Pro",
     isNew: true,
   },
   {
@@ -316,7 +316,7 @@ export const allTemplates: TemplateData[] = [
     description: "Bold design for creative leadership roles",
     category: TemplateCategory.CREATIVE,
     tags: ["Leadership", "Design", "Creative"],
-    image: "/placeholder.svg?height=300&width=400&text=Creative+Director",
+    image: "/creative-director.png?height=300&width=400&text=Creative+Director",
     isNew: true,
   },
   {
@@ -325,7 +325,7 @@ export const allTemplates: TemplateData[] = [
     description: "Clean layout highlighting UX/UI skills and projects",
     category: TemplateCategory.CREATIVE,
     tags: ["UX", "Design", "Portfolio"],
-    image: "/placeholder.svg?height=300&width=400&text=UX+Designer",
+    image: "/ux-designer.png?height=300&width=400&text=UX+Designer",
     isNew: true,
   },
 
@@ -336,7 +336,7 @@ export const allTemplates: TemplateData[] = [
     description: "Specialized for government relations and policy professionals",
     category: TemplateCategory.SPECIALIZED,
     tags: ["Government", "Policy", "ATS-Friendly"],
-    image: "/placeholder.svg?height=300&width=400&text=Government+Affairs",
+    image: "/government-affairs.png?height=300&width=400&text=Government+Affairs",
     isNew: true,
   },
   {
@@ -345,7 +345,7 @@ export const allTemplates: TemplateData[] = [
     description: "Focused on mission-driven work and impact",
     category: TemplateCategory.SPECIALIZED,
     tags: ["Nonprofit", "Social Impact", "ATS-Friendly"],
-    image: "/placeholder.svg?height=300&width=400&text=Nonprofit",
+    image: "/nonprofit.png?height=300&width=400&text=Nonprofit",
     isNew: true,
   },
   {
@@ -354,7 +354,7 @@ export const allTemplates: TemplateData[] = [
     description: "Highlights sales achievements and metrics",
     category: TemplateCategory.PROFESSIONAL,
     tags: ["Sales", "Revenue", "ATS-Friendly"],
-    image: "/placeholder.svg?height=300&width=400&text=Sales+Executive",
+    image: "/sales-executive.png?height=300&width=400&text=Sales+Executive",
     isNew: true,
   },
   {
@@ -363,7 +363,7 @@ export const allTemplates: TemplateData[] = [
     description: "Optimized for remote work positions",
     category: TemplateCategory.MODERN,
     tags: ["Remote", "Digital", "ATS-Friendly"],
-    image: "/placeholder.svg?height=300&width=400&text=Remote+Professional",
+    image: "/remote-professional.png?height=300&width=400&text=Remote+Professional",
     isNew: true,
   },
   {
@@ -372,7 +372,7 @@ export const allTemplates: TemplateData[] = [
     description: "Emphasizes transferable skills for career transitions",
     category: TemplateCategory.SPECIALIZED,
     tags: ["Transition", "Skills", "ATS-Friendly"],
-    image: "/placeholder.svg?height=300&width=400&text=Career+Change",
+    image: "/career-change.png?height=300&width=400&text=Career+Change",
     isNew: true,
   },
   {
@@ -381,7 +381,7 @@ export const allTemplates: TemplateData[] = [
     description: "Professional layout for administrative professionals",
     category: TemplateCategory.PROFESSIONAL,
     tags: ["Administrative", "Support", "ATS-Friendly"],
-    image: "/placeholder.svg?height=300&width=400&text=Executive+Assistant",
+    image: "/executive-assistant.png?height=300&width=400&text=Executive+Assistant",
     isNew: true,
   },
   {
@@ -390,7 +390,7 @@ export const allTemplates: TemplateData[] = [
     description: "Specialized for HR professionals at all levels",
     category: TemplateCategory.PROFESSIONAL,
     tags: ["HR", "Recruitment", "ATS-Friendly"],
-    image: "/placeholder.svg?height=300&width=400&text=Human+Resources",
+    image: "/human-resources.png?height=300&width=400&text=Human+Resources",
     isNew: true,
   },
   {
@@ -399,7 +399,7 @@ export const allTemplates: TemplateData[] = [
     description: "Focused on logistics and supply chain achievements",
     category: TemplateCategory.SPECIALIZED,
     tags: ["Logistics", "Operations", "ATS-Friendly"],
-    image: "/placeholder.svg?height=300&width=400&text=Supply+Chain",
+    image: "/supply-chain.png?height=300&width=400&text=Supply+Chain",
     isNew: true,
   },
   {
@@ -408,7 +408,7 @@ export const allTemplates: TemplateData[] = [
     description: "Designed for teachers and education professionals",
     category: TemplateCategory.SPECIALIZED,
     tags: ["Teaching", "Education", "ATS-Friendly"],
-    image: "/placeholder.svg?height=300&width=400&text=Education",
+    image: "/education.png?height=300&width=400&text=Education",
     isNew: true,
   },
   {
@@ -417,7 +417,7 @@ export const allTemplates: TemplateData[] = [
     description: "Specialized for security professionals",
     category: TemplateCategory.TECHNICAL,
     tags: ["Security", "Technical", "ATS-Friendly"],
-    image: "/placeholder.svg?height=300&width=400&text=Cybersecurity",
+    image: "/cybersecurity.png?height=300&width=400&text=Cybersecurity",
     isNew: true,
   },
 ]
