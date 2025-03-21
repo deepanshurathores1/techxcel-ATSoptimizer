@@ -1,0 +1,350 @@
+import type { ResumeData } from "@/types/resume"
+
+interface CreativeDirectorTemplateProps {
+  data: ResumeData
+}
+
+export default function CreativeDirectorTemplate({ data }: CreativeDirectorTemplateProps) {
+  const { personalInfo, experience, education, skills, styles = {}, customSections = [] } = data
+
+  // Default styles if not provided
+  const {
+    fontFamily = "'Playfair Display', serif",
+    fontSize = 12,
+    lineHeight = 1.5,
+    primaryColor = "#be185d",
+    showBorders = true,
+    spacing = 24,
+    hiddenSections = [],
+  } = styles
+
+  return (
+    <div className="max-w-[800px] mx-auto" style={{ fontFamily }}>
+      <header className="mb-8">
+        <div
+          className="p-6 rounded-lg mb-6 relative overflow-hidden"
+          style={{
+            backgroundColor: primaryColor,
+            color: "white",
+          }}
+        >
+          {/* Decorative elements */}
+          <div
+            className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20"
+            style={{
+              backgroundColor: "white",
+              transform: "translate(30%, -30%)",
+            }}
+          ></div>
+
+          <div className="relative z-10">
+            <h1
+              className="text-3xl font-bold mb-2"
+              style={{
+                fontSize: `${fontSize * 2}px`,
+              }}
+            >
+              {personalInfo.fullName || "Your Name"}
+            </h1>
+            <p
+              className="text-xl mb-4"
+              style={{
+                fontSize: `${fontSize * 1.5}px`,
+              }}
+            >
+              {personalInfo.title || "Creative Director"}
+            </p>
+            <div
+              className="flex flex-wrap gap-4 text-sm"
+              style={{
+                fontSize: `${fontSize}px`,
+              }}
+            >
+              {personalInfo.email && <span>{personalInfo.email}</span>}
+              {personalInfo.phone && <span>{personalInfo.phone}</span>}
+              {personalInfo.location && <span>{personalInfo.location}</span>}
+            </div>
+          </div>
+        </div>
+
+        {!hiddenSections.includes("summary") && personalInfo.summary && (
+          <div
+            className="mb-6"
+            style={{
+              marginBottom: `${spacing}px`,
+            }}
+          >
+            <h2
+              className="text-lg font-bold mb-3"
+              style={{
+                fontSize: `${fontSize * 1.33}px`,
+                color: primaryColor,
+              }}
+            >
+              Creative Vision
+            </h2>
+            <p
+              className="text-sm"
+              style={{
+                fontSize: `${fontSize}px`,
+                lineHeight,
+              }}
+            >
+              {personalInfo.summary}
+            </p>
+          </div>
+        )}
+      </header>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="md:col-span-2">
+          {!hiddenSections.includes("experience") && experience && experience.length > 0 && (
+            <section
+              className="mb-6"
+              style={{
+                marginBottom: `${spacing}px`,
+              }}
+            >
+              <h2
+                className="text-lg font-bold mb-3"
+                style={{
+                  fontSize: `${fontSize * 1.33}px`,
+                  color: primaryColor,
+                }}
+              >
+                Creative Experience
+              </h2>
+              <div className="space-y-4">
+                {experience.map((job, index) => (
+                  <div key={index} className="mb-4">
+                    <div className="flex justify-between items-baseline">
+                      <h3
+                        className="font-bold"
+                        style={{
+                          fontSize: `${fontSize * 1.17}px`,
+                          color: primaryColor,
+                        }}
+                      >
+                        {job.position}
+                      </h3>
+                      <span
+                        className="text-sm"
+                        style={{
+                          fontSize: `${fontSize * 0.9}px`,
+                        }}
+                      >
+                        {job.startDate} - {job.endDate}
+                      </span>
+                    </div>
+                    <p
+                      className="font-medium mb-2"
+                      style={{
+                        fontSize: `${fontSize}px`,
+                      }}
+                    >
+                      {job.company}
+                    </p>
+                    <p
+                      className="text-sm whitespace-pre-line"
+                      style={{
+                        fontSize: `${fontSize}px`,
+                        lineHeight,
+                      }}
+                    >
+                      {job.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Portfolio Highlights - specific to creative director */}
+          <section
+            className="mb-6"
+            style={{
+              marginBottom: `${spacing}px`,
+            }}
+          >
+            <h2
+              className="text-lg font-bold mb-3"
+              style={{
+                fontSize: `${fontSize * 1.33}px`,
+                color: primaryColor,
+              }}
+            >
+              Portfolio Highlights
+            </h2>
+            <div
+              className="space-y-3"
+              style={{
+                fontSize: `${fontSize}px`,
+              }}
+            >
+              <div className="p-3 rounded-lg" style={{ backgroundColor: `${primaryColor}10` }}>
+                <h3 className="font-bold mb-1">Brand Transformation: Global Tech Company</h3>
+                <p className="text-sm">
+                  Led complete rebrand that increased brand recognition by 45% and contributed to 30% revenue growth.
+                </p>
+              </div>
+              <div className="p-3 rounded-lg" style={{ backgroundColor: `${primaryColor}10` }}>
+                <h3 className="font-bold mb-1">Award-Winning Campaign: Consumer Products</h3>
+                <p className="text-sm">
+                  Directed integrated campaign that won three industry awards and drove 65% increase in customer
+                  engagement.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* Custom Sections */}
+          {customSections.map((section) => (
+            <section
+              key={section.id}
+              className="mb-6"
+              style={{
+                marginBottom: `${spacing}px`,
+              }}
+            >
+              <h2
+                className="text-lg font-bold mb-3"
+                style={{
+                  fontSize: `${fontSize * 1.33}px`,
+                  color: primaryColor,
+                }}
+              >
+                {section.title}
+              </h2>
+              <p
+                className="text-sm whitespace-pre-line"
+                style={{
+                  fontSize: `${fontSize}px`,
+                  lineHeight,
+                }}
+              >
+                {section.content}
+              </p>
+            </section>
+          ))}
+        </div>
+
+        <div>
+          {!hiddenSections.includes("skills") && skills && skills.length > 0 && (
+            <section
+              className="mb-6"
+              style={{
+                marginBottom: `${spacing}px`,
+              }}
+            >
+              <h2
+                className="text-lg font-bold mb-3"
+                style={{
+                  fontSize: `${fontSize * 1.33}px`,
+                  color: primaryColor,
+                }}
+              >
+                Creative Skills
+              </h2>
+              <div className="space-y-2">
+                {skills.map((skill, index) => (
+                  <div
+                    key={index}
+                    className="p-2 rounded-lg"
+                    style={{
+                      backgroundColor: `${primaryColor}10`,
+                      fontSize: `${fontSize}px`,
+                    }}
+                  >
+                    {skill.name}
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Awards & Recognition - specific to creative director */}
+          <section
+            className="mb-6"
+            style={{
+              marginBottom: `${spacing}px`,
+            }}
+          >
+            <h2
+              className="text-lg font-bold mb-3"
+              style={{
+                fontSize: `${fontSize * 1.33}px`,
+                color: primaryColor,
+              }}
+            >
+              Awards & Recognition
+            </h2>
+            <div
+              className="space-y-2"
+              style={{
+                fontSize: `${fontSize}px`,
+              }}
+            >
+              <p>
+                <strong>Cannes Lions</strong> - Gold, Design Category
+              </p>
+              <p>
+                <strong>D&AD Awards</strong> - Yellow Pencil
+              </p>
+              <p>
+                <strong>The One Show</strong> - Gold Pencil
+              </p>
+              <p>
+                <strong>Clio Awards</strong> - Grand Clio
+              </p>
+            </div>
+          </section>
+
+          {!hiddenSections.includes("education") && education && education.length > 0 && (
+            <section>
+              <h2
+                className="text-lg font-bold mb-3"
+                style={{
+                  fontSize: `${fontSize * 1.33}px`,
+                  color: primaryColor,
+                }}
+              >
+                Education
+              </h2>
+              <div className="space-y-3">
+                {education.map((edu, index) => (
+                  <div key={index}>
+                    <h3
+                      className="font-bold"
+                      style={{
+                        fontSize: `${fontSize * 1.08}px`,
+                      }}
+                    >
+                      {edu.degree} in {edu.fieldOfStudy}
+                    </h3>
+                    <p
+                      className="text-sm"
+                      style={{
+                        fontSize: `${fontSize}px`,
+                      }}
+                    >
+                      {edu.institution}
+                    </p>
+                    <p
+                      className="text-sm"
+                      style={{
+                        fontSize: `${fontSize * 0.9}px`,
+                      }}
+                    >
+                      {edu.graduationDate}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
