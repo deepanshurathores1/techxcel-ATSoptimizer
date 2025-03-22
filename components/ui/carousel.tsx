@@ -260,3 +260,4 @@ export {
   CarouselPrevious,
   CarouselNext,
 }
+export default Carousel; // Ensure this is present
