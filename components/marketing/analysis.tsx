@@ -1,7 +1,7 @@
 "use client";
 
-import { Carousel } from "@/components/ui/Carousel";
-import { Card } from "@/components/ui/Card"; // Ensure this is correctly imported
+import { Carousel } from "@/components/ui/carousel";
+import { Card } from "@/components/ui/card"; // Ensure this is correctly imported
 
 const Analysis = () => {
     const resumeTemplates = [

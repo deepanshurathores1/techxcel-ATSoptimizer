@@ -1,0 +1,8 @@
+Django
+djangorestframework
+PyPDF2
+pdfminer.six
+requests
+numpy
+scikit-learn
+pandas

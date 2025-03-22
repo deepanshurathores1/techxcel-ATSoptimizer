@@ -6,14 +6,10 @@ import { CheckCircle2, AlertCircle, FileText, Frown, Meh, Smile } from "lucide-r
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Textarea } from "@/components/ui/textarea"
+import { Label } from "@/components/ui/label"
 
-const getRandomScore = () => Math.floor(Math.random() * (98 - 65 + 1)) + 65
-
-const getRandomItems = (items: string[], count: number) => {
-  const shuffled = [...items].sort(() => 0.5 - Math.random())
-  return shuffled.slice(0, count)
-}
-
+// Keep these arrays as fallbacks in case the API fails
 const suggestions = [
   "Add more quantifiable achievements to strengthen impact",
   "Include relevant keywords from the job description",
@@ -55,6 +51,7 @@ const improvementAreas = [
 
 export function ResumeAnalyzer() {
   const [file, setFile] = useState<File | null>(null)
+  const [jobDescription, setJobDescription] = useState("")
   const [analysis, setAnalysis] = useState<{
     score: number
     suggestions: string[]
@@ -62,12 +59,13 @@ export function ResumeAnalyzer() {
     improvements: string[]
   } | null>(null)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const uploadedFile = acceptedFiles[0]
     if (uploadedFile) {
       setFile(uploadedFile)
-      analyzeResume(uploadedFile)
+      // Don't automatically analyze - wait for job description and submission
     }
   }, [])
 
@@ -79,17 +77,67 @@ export function ResumeAnalyzer() {
     },
   })
 
-  const analyzeResume = async (file: File) => {
+  const analyzeResume = async () => {
+    if (!file) {
+      setError("Please upload a resume file")
+      return
+    }
+    
+    if (!jobDescription || jobDescription.trim().length < 10) {
+      setError("Please enter a detailed job description")
+      return
+    }
+
+    setError(null)
     setIsAnalyzing(true)
-    setTimeout(() => {
+    
+    try {
+      // Create form data
+      const formData = new FormData()
+      formData.append("resume", file)
+      formData.append("jobDescription", jobDescription)
+      
+      // Call the API route
+      const response = await fetch("/api/analyze-resume", {
+        method: "POST",
+        body: formData,
+      })
+      
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || "Failed to analyze resume")
+      }
+      
+      const result = await response.json()
+      
+      // Set the analysis data from API result
+      setAnalysis({
+        score: result.atsAnalysis.score,
+        suggestions: result.resumeFeedback.suggestions,
+        strengths: result.resumeFeedback.strengths,
+        improvements: result.resumeFeedback.areas_for_improvement,
+      })
+    } catch (err) {
+      console.error("Error analyzing resume:", err)
+      setError((err as Error).message || "Failed to analyze resume")
+      
+      // Fallback to random data if API fails
       setAnalysis({
         score: getRandomScore(),
         suggestions: getRandomItems(suggestions, 3),
         strengths: getRandomItems(strengths, 3),
         improvements: getRandomItems(improvementAreas, 3),
       })
+    } finally {
       setIsAnalyzing(false)
-    }, 2000)
+    }
+  }
+
+  // Helper function for fallback data
+  const getRandomScore = () => Math.floor(Math.random() * (98 - 65 + 1)) + 65
+  const getRandomItems = (items: string[], count: number) => {
+    const shuffled = [...items].sort(() => 0.5 - Math.random())
+    return shuffled.slice(0, count)
   }
 
   const getMoodEmoji = (score: number) => {
@@ -122,6 +170,37 @@ export function ResumeAnalyzer() {
             <p className="text-sm text-gray-500 mt-1">Supports PDF and DOCX formats</p>
           </div>
         </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="jobDescription">Job Description</Label>
+        <Textarea
+          id="jobDescription"
+          placeholder="Paste the job description here..."
+          className="min-h-32"
+          value={jobDescription}
+          onChange={(e) => setJobDescription(e.target.value)}
+        />
+        <p className="text-sm text-gray-500">
+          For best results, include the full job description including requirements and responsibilities
+        </p>
+      </div>
+
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md flex items-start gap-2">
+          <AlertCircle className="h-5 w-5 mt-0.5 flex-shrink-0" />
+          <p>{error}</p>
+        </div>
+      )}
+
+      <div className="flex justify-center">
+        <Button 
+          onClick={analyzeResume} 
+          disabled={isAnalyzing || !file || !jobDescription}
+          className="px-8 py-2"
+        >
+          {isAnalyzing ? "Analyzing..." : "Analyze Resume"}
+        </Button>
       </div>
 
       {isAnalyzing && (
